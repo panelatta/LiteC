@@ -15,6 +15,12 @@ void PrintDoubleValue(double a) {
     printf("%f\n", a);
 }
 
+struct yabai {
+    void (*yahoo)(int *);
+    void (*yahoo2)(int);
+};
+struct yabai p = { .yahoo=PrintDouble, .yahoo2=PrintDoubleValue };
+
 int main(void) {
     PRINT_INT f = (PRINT_INT)PrintDouble;
     double p = 2.2356;
