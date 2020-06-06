@@ -1,35 +1,22 @@
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
+#define __VOPS_OBJ__(Type) Type ## _ops
+#define __VOPS_ITER_OBJ__(Type) Type ## _iter_ops
 
-typedef void (*PRINT_INT)(int *);
-typedef void (*PRINT_INT_VALUE)(int);
+#define __INIT_ARGS_TYPE__(Type) Type ## InitArgs
+#define __INIT_ARGS_DEFAULT__(Type) Type ## _INIT_ARGS_DEFAULT
+#define __EAT_COMMA__(...)  , ## __VA_ARGS__
+#define __INIT_ARGS_SET__(Type, ElemType, ...)      \
+    (__INIT_ARGS_TYPE__(Type)){                     \
+        __INIT_ARGS_DEFAULT__(Type),                \
+        .elem_size = sizeof(ElemType)               \
+        __EAT_COMMA__(__VA_ARGS__)                  \
+    }
+#define __INIT_FUNC__(Type) __VOPS_OBJ__(Type).init
 
-void PrintDouble(double *a) {
-    printf("%u\n", a);
-    printf("%f\n", *a);
-}
+#define __LEFT_BRACKET__ (
+#define __NEW_OBJ__(Type, ElemType, ...)          \
+    (Type *)__INIT_FUNC__(Type)(__INIT_ARGS_SET__(Type, ElemType, __VA_ARGS__))
 
-void PrintDoubleValue(double a) {
-    printf("%d\n", a);
-    printf("%f\n", a);
-}
+#define LVector_INIT_ARGS_DEFAULT     \
+    .capacity = 10, .elem_init = NULL, .elem_free = NULL
 
-struct yabai {
-    void (*yahoo)(int *);
-    void (*yahoo2)(int);
-};
-struct yabai p = { .yahoo=PrintDouble, .yahoo2=PrintDoubleValue };
-
-int main(void) {
-    PRINT_INT f = (PRINT_INT)PrintDouble;
-    double p = 2.2356;
-    f(&p);
-    PrintDouble(&p);
-    
-    PRINT_INT_VALUE ff = (PRINT_INT_VALUE)PrintDoubleValue;
-    ff(p);
-    PrintDoubleValue(p);
-
-    return 0;
-}
+__NEW_OBJ__(LVector, int);
