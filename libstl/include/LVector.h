@@ -103,7 +103,7 @@ void         lvector_reserve        (LVector *self, size_t new_cap);
 void         lvector_shrink_to_fit  (LVector *self);
 
 void         lvector_clear          (LVector *self);
-LVectorIter  lvector_insert         (LVector *self, size_t count, void *obj);
+LVectorIter  lvector_insert         (LVectorIter iter, size_t count, void *obj);
 LVectorIter  lvector_insert_seg     (LVectorIter iter, void *first, void *last);
 LVectorIter  lvector_emplace        (LVectorIter iter, void *args);
 LVectorIter  lvector_erase          (LVectorIter iter);
